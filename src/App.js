@@ -90,6 +90,24 @@ class BooksApp extends React.Component {
       })
   }*/
 
+  changeShelf = (book, e) => {
+    const newShelf = e.target.value
+    const books = this.state.books
+    const index = books.findIndex(b => b.id == book.id)
+
+    console.log(book.shelf + ' -> ' + newShelf)
+
+    if (book.shelf !== newShelf) {
+      books[index].shelf = newShelf;
+    }
+
+    this.setState((currentState) => ({
+      books: currentState.books
+    }))
+
+    //console.log(this.state.books)
+  }
+
   render() {
     //console.log(this.state.books);
 
@@ -126,9 +144,9 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <BookShelf title='Currently Reading' books={this.state.books.filter(book => book.shelf == 'currentlyReading')} />
-                <BookShelf title='Want to Read' books={this.state.books.filter(book => book.shelf == 'wantToRead')} />
-                <BookShelf title='Read' books={this.state.books.filter(book => book.shelf == 'read')} />
+                <BookShelf title='Currently Reading' books={this.state.books.filter(book => book.shelf == 'currentlyReading')} onChangeShelf={this.changeShelf} />
+                <BookShelf title='Want to Read' books={this.state.books.filter(book => book.shelf == 'wantToRead')} onChangeShelf={this.changeShelf} />
+                <BookShelf title='Read' books={this.state.books.filter(book => book.shelf == 'read')} onChangeShelf={this.changeShelf} />
               </div>
             </div>
             <div className="open-search">
