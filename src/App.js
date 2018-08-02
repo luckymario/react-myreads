@@ -2,8 +2,8 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import BookShelf from './BookShelf'
-import { Route } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import SearchBooks from './SearchBooks'
+import { Route, Link } from 'react-router-dom'
 
 class BooksApp extends React.Component {
   state = {
@@ -95,7 +95,7 @@ class BooksApp extends React.Component {
     const books = this.state.books
     const index = books.findIndex(b => b.id == book.id)
 
-    console.log(book.shelf + ' -> ' + newShelf)
+    //console.log(book.shelf + ' -> ' + newShelf)
 
     if (book.shelf !== newShelf) {
       books[index].shelf = newShelf;
@@ -105,7 +105,7 @@ class BooksApp extends React.Component {
       books: currentState.books
     }))
 
-    //console.log(this.state.books)
+    //BooksAPI.update(book, newShelf)
   }
 
   render() {
@@ -113,28 +113,8 @@ class BooksApp extends React.Component {
 
     return (
       <div className="app">
-        <Route path='/search' render={({ history }) => (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <Link className='close-search' to='/'>Close</Link>
-
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
-
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
+        <Route path='/search' render={() => (
+          <SearchBooks books={this.state.books} onChangeShelf={this.changeShelf} />
         )} />
 
         <Route exact path='/' render={() => (
