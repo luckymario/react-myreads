@@ -7,7 +7,7 @@ import { Route, Link } from 'react-router-dom'
 
 class BooksApp extends React.Component {
   state = {
-    books: [
+    booksArray: [
       {
         id: '1',
         imageLinks: {
@@ -15,7 +15,7 @@ class BooksApp extends React.Component {
         },
         shelf: 'currentlyReading',
         title: 'To Kill a Mockingbird',
-        author: 'Harper Lee'
+        authors: ['Harper Lee']
       },
       {
         id: '2',
@@ -24,7 +24,7 @@ class BooksApp extends React.Component {
         },
         shelf: 'currentlyReading',
         title: 'Ender\'s Game',
-        author: 'Orson Scott Card'
+        authors: ['Orson Scott Card']
       },
       {
         id: '3',
@@ -33,7 +33,7 @@ class BooksApp extends React.Component {
         },
         shelf: 'wantToRead',
         title: '1776',
-        author: 'David McCullough'
+        authors: ['David McCullough']
       },
       {
         id: '4',
@@ -42,7 +42,7 @@ class BooksApp extends React.Component {
         },
         shelf: 'wantToRead',
         title: 'Harry Potter and the Sorcerer\'s Stone',
-        author: 'J.K. Rowling'
+        authors: ['J.K. Rowling']
       },
       {
         id: '5',
@@ -51,7 +51,7 @@ class BooksApp extends React.Component {
         },
         shelf: 'read',
         title: 'The Hobbit',
-        author: 'J.R.R. Tolkien'
+        authors: ['J.R.R. Tolkien']
       },
       {
         id: '6',
@@ -60,7 +60,7 @@ class BooksApp extends React.Component {
         },
         shelf: 'read',
         title: 'Oh, the Places You\'ll Go!',
-        author: 'Seuss'
+        authors: ['Seuss']
       },
       {
         id: '7',
@@ -69,26 +69,20 @@ class BooksApp extends React.Component {
         },
         shelf: 'read',
         title: 'The Adventures of Tom Sawyer',
-        author: 'Mark Twain'
+        authors: ['Mark Twain']
       }
     ],
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: false
+    books: []
   }
 
-  /*componentDidMount() {
+  componentDidMount() {
     BooksAPI.getAll()
       .then((books) => {
         this.setState(() => ({
           books
         }))
       })
-  }*/
+  }
 
   changeShelf = (book, e) => {
     const newShelf = e.target.value
@@ -97,15 +91,26 @@ class BooksApp extends React.Component {
 
     //console.log(book.shelf + ' -> ' + newShelf)
 
-    if (book.shelf !== newShelf) {
+
+    if (index !== -1 && books[index].shelf !== newShelf) { // Change shelf
       books[index].shelf = newShelf;
+
+      this.setState((currentState) => ({
+        books: currentState.books
+      }))
+
+    } else { // Add new book to shelves
+      console.log('new book')
+      book.shelf = newShelf
+
+      this.setState((currentState) => ({
+        books: currentState.books.concat([book])
+      }))
     }
 
-    this.setState((currentState) => ({
-      books: currentState.books
-    }))
 
-    //BooksAPI.update(book, newShelf)
+
+    BooksAPI.update(book, newShelf)
   }
 
   render() {
