@@ -103,6 +103,12 @@ class BooksApp extends React.Component {
   }
 
   render() {
+    const shelves = {
+      currentlyReading: ['Currently Reading', 'currentlyReading'],
+      wantToRead: ['Want to Read', 'wantToRead'],
+      read: ['Read', 'read']
+    }
+
     return (
       <div className="app">
         <Route path='/search' render={() => (
@@ -116,9 +122,14 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <BookShelf title='Currently Reading' books={this.state.books.filter(book => book.shelf == 'currentlyReading')} onChangeShelf={this.changeShelf} />
-                <BookShelf title='Want to Read' books={this.state.books.filter(book => book.shelf == 'wantToRead')} onChangeShelf={this.changeShelf} />
-                <BookShelf title='Read' books={this.state.books.filter(book => book.shelf == 'read')} onChangeShelf={this.changeShelf} />
+                { Object.keys(shelves).map((shelf) =>
+                  <BookShelf key={shelf}
+                    shelf={shelves[shelf][1]}
+                    title={shelves[shelf][0]}
+                    books={ this.state.books.filter(book => book.shelf == shelves[shelf][1]) }
+                    onChangeShelf={this.changeShelf}
+                  />
+                )}
               </div>
             </div>
             <div className="open-search">
