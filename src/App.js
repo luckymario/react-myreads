@@ -85,37 +85,24 @@ class BooksApp extends React.Component {
   }
 
   changeShelf = (book, e) => {
+    var newBooks = this.state.books
     const newShelf = e.target.value
-    const books = this.state.books
-    const index = books.findIndex(b => b.id == book.id)
+    const index = newBooks.findIndex(b => b.id == book.id)
 
-    //console.log(book.shelf + ' -> ' + newShelf)
-
-
-    if (index !== -1 && books[index].shelf !== newShelf) { // Change shelf
-      books[index].shelf = newShelf;
-
-      this.setState((currentState) => ({
-        books: currentState.books
-      }))
+    if (index !== -1 && newBooks[index].shelf !== newShelf) { // Change shelf
+      newBooks[index].shelf = newShelf;
 
     } else { // Add new book to shelves
-      console.log('new book')
       book.shelf = newShelf
-
-      this.setState((currentState) => ({
-        books: currentState.books.concat([book])
-      }))
+      newBooks = newBooks.concat([book])
     }
 
-
-
-    BooksAPI.update(book, newShelf)
+    BooksAPI.update(book, newShelf).then(() => {
+      this.setState({books: newBooks})
+    })
   }
 
   render() {
-    //console.log(this.state.books);
-
     return (
       <div className="app">
         <Route path='/search' render={() => (
