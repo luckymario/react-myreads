@@ -56,6 +56,9 @@ class SearchBooks extends Component {
             	)
             )}
           </ol>
+          {query !== '' && listBooks.length === 0 && (
+						<p>Books no found</p>
+					)}
         </div>
       </div>
 		)
