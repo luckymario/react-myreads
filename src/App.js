@@ -85,7 +85,7 @@ class BooksApp extends React.Component {
   }
 
   changeShelf = (book, e) => {
-    var newBooks = this.state.books
+    let newBooks = this.state.books
     const newShelf = e.target.value
     const index = newBooks.findIndex(b => b.id == book.id)
 
